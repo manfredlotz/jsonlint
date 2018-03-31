@@ -8,7 +8,7 @@ use std::io::prelude::*;
 use std::path::Path;
 
 fn main() {
-    let args = clap_app!(fddf =>
+    let args = clap_app!(jsonlint =>
                          (version: "0.9")
                          (author: "Manfred Lotz, 2018")
                          (about: "A JSON syntax checker and pretty printer.")
