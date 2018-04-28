@@ -1,27 +1,27 @@
 #[macro_use]
-extern crate clap;
+extern crate structopt;
 extern crate serde;
 extern crate serde_json;
 
+use structopt::StructOpt;
 use std::fs::File;
 use std::io::prelude::*;
 use std::path::Path;
 
+#[derive(StructOpt)]
+#[structopt(about="A JSON syntax checker and pretty printer.")]
+struct Args {
+    #[structopt(short="p", help="Pretty prints a JSON file")]
+    pretty_print: bool,
+    #[structopt(help="JSON files to syntax check")]
+    json_files: Vec<String>,
+}
+
 fn main() {
-    let args = clap_app!(jsonlint =>
-                         (version: "0.9")
-                         (author: "Manfred Lotz, 2018")
-                         (about: "A JSON syntax checker and pretty printer.")
-                         (@arg pretty_print: -p "Pretty prints a JSON file")
-                         (@arg json_files: +required +multiple "JSON files to syntax check.")
-    ).get_matches();
+    let Args { pretty_print, json_files } = Args::from_args();
 
 
-
-    let pretty_print = args.is_present("pretty_print");
-    let files = args.values_of("json_files").unwrap();
-
-    for element in files {
+    for element in json_files {
 
         let path = Path::new(&element);
         let display = path.display();
@@ -47,12 +47,13 @@ fn main() {
     }
 }
 
-fn check_json(s: &str) -> Option<serde_json::Error>  { // serde_json::Value  {
+fn check_json(s: &str) -> Option<serde_json::Error>  {
     //let r : Result<serde_json::Value,serde_json::Error> = serde_json::from_str(s);
     let r : Result<serde::de::IgnoredAny,serde_json::Error> = serde_json::from_str(s);
 
     r.err()
 }
+
 
 fn read_json(s: &str) -> Result<serde_json::Value,serde_json::Error>  { // serde_json::Value  {
     serde_json::from_str(s)

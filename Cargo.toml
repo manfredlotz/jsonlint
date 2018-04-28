@@ -5,6 +5,6 @@ authors = ["Manfred Lotz <manfred.lotz@yahoo.de>"]
 
 
 [dependencies]
-clap = "2.24.2"
+structopt = "0.2.7"
 serde_json = "1.0"
 serde = "1.0"
