@@ -59,20 +59,14 @@ fn read_json(s: &str) -> Result<serde_json::Value,serde_json::Error>  { // serde
     serde_json::from_str(s)
 }
 
+
 fn read_file(path: &Path) -> Result<String, std::io::Error> {
     // Open the path in read-only mode, returns `io::Result<File>`
-    let file = File::open(path);
+    let mut file = File::open(path)?;
 
-    match file {
+    let mut s = String::new();
+    match file.read_to_string(&mut s) {
         Err(why) => Err(why),
-        Ok(mut file) =>
-        {
-            let mut s = String::new();
-            match file.read_to_string(&mut s) {
-                Err(why) => Err(why),
-                Ok(_) => Ok(s)
-            }
-        }
+        Ok(_) => Ok(s)
     }
-
 }
