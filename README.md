@@ -7,7 +7,9 @@ It is written in Rust, and uses the serde_json library.
 
 Run
 
+```sh
 cargo build --release
+```
 
 ## License
 
